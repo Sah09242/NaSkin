@@ -330,6 +330,7 @@
       statusEl.className = "form-status ok";
       cForm.reset();
     });
+  }
  })();
 
 /* ---------- Active nav highlight ---------- */
