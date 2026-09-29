@@ -873,3 +873,6 @@ font-weight: 400 !important;
 @media (prefers-reduced-motion: reduce) {
   .logo-img { animation: none; }
 }
+/* ---------- Active nav link highlight ---------- */
+.primary-nav a.active { color: var(--sage-dark); }
+.primary-nav a.active::after { transform: scaleX(1); }
