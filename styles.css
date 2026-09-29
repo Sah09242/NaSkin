@@ -876,3 +876,6 @@ font-weight: 400 !important;
 /* ---------- Active nav link highlight ---------- */
 .primary-nav a.active { color: var(--sage-dark); }
 .primary-nav a.active::after { transform: scaleX(1); }
+section[id] {
+  scroll-margin-top: 100px;
+}
