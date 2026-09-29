@@ -331,4 +331,22 @@
       cForm.reset();
     });
   }
+     /* ---------- Active nav link on scroll ---------- */
+  const navLinks = $$(".primary-nav a[href^='#']");
+  const sections = navLinks
+    .map((a) => document.querySelector(a.getAttribute("href")))
+    .filter(Boolean);
+
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((a) =>
+          a.classList.toggle("active", a.getAttribute("href") === `#${entry.target.id}`)
+        );
+      });
+    },
+    { rootMargin: "-40% 0px -55% 0px" }
+  );
+  sections.forEach((s) => spy.observe(s));
 })();
