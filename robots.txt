@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sah09242.github.io/NaSkin/sitemap.xml
+Sitemap: https://sah09242.github.io/naskin/sitemap.xml
