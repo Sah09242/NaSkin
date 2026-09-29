@@ -11,10 +11,11 @@
   const byId = Object.fromEntries(PRODUCTS.map((p) => [p.id, p]));
 
   /* ---------- Currency formatting ---------- */
-  const fmt = (p) =>
-    `₹${p.inr.toLocaleString("en-IN")} / $${p.price.toFixed(2).replace(/\.00$/, "")}`;
-
-  const thumb = (p) => p.img.replace("w=800", "w=200");
+  const USD_TO_INR = 87; /* update this now and then, or use live rates */
+  const fmtINR = (n) => "₹" + Math.round(n * USD_TO_INR).toLocaleString("en-IN");
+  const fmt = (n) => "$" + n.toFixed(2).replace(/\.00$/, "") + " · " + fmtINR(n);
+  
+   const thumb = (p) => p.img.replace("w=800", "w=200");
 
   $("#year").textContent = new Date().getFullYear();
 
