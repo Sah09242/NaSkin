@@ -330,15 +330,18 @@
       statusEl.className = "form-status ok";
       cForm.reset();
     });
-  }
-  /* ---------- Active nav highlight (standalone) ---------- */
+ })();
+
+/* ---------- Active nav highlight ---------- */
 (function () {
   var links = Array.prototype.slice.call(document.querySelectorAll(".primary-nav a[href^='#']"));
   if (!links.length || !("IntersectionObserver" in window)) return;
 
   var map = [];
   links.forEach(function (a) {
-    var sec = document.querySelector(a.getAttribute("href"));
+    var href = a.getAttribute("href");
+    /* Home points to #top (tiny header) — highlight the hero instead */
+    var sec = href === "#top" ? document.querySelector(".hero") : document.querySelector(href);
     if (sec) map.push({ link: a, section: sec });
   });
 
@@ -349,9 +352,7 @@
         item.link.classList.toggle("active", item.section === entry.target);
       });
     });
-  }, { rootMargin: "-40% 0px -55% 0px" });
+  }, { rootMargin: "-35% 0px -55% 0px" });
 
   map.forEach(function (item) { spy.observe(item.section); });
-})();
-
 })();
