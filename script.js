@@ -333,43 +333,18 @@
   }
  })();
 
-/* ---------- Navigation: smooth scrolling + active section ---------- */
+/* ---------- Navigation ---------- */
 (function () {
   "use strict";
 
-  const links = Array.from(
-    document.querySelectorAll(".primary-nav a[href^='#']")
-  );
+  const nav = document.getElementById("primary-nav");
+  const navToggle = document.getElementById("nav-toggle");
 
-  if (!links.length) return;
+  document.querySelectorAll(".primary-nav a").forEach(function (link) {
 
-  /*
-   * Smooth-scroll navigation.
-   * This also works when the mobile menu is open.
-   */
-  links.forEach((link) => {
+    link.addEventListener("click", function () {
 
-    link.addEventListener("click", function (event) {
-
-      const href = this.getAttribute("href");
-
-      if (!href || href === "#") return;
-
-      const target =
-        href === "#top"
-          ? document.getElementById("top")
-          : document.querySelector(href);
-
-      if (!target) return;
-
-      event.preventDefault();
-
-      /*
-       * Close mobile menu.
-       */
-      const nav = document.getElementById("primary-nav");
-      const navToggle = document.getElementById("nav-toggle");
-
+      /* Close mobile menu immediately */
       if (nav) {
         nav.classList.remove("open");
       }
@@ -379,91 +354,8 @@
         navToggle.setAttribute("aria-label", "Open menu");
       }
 
-      /*
-       * Account for the sticky header.
-       */
-      const header =
-        document.querySelector(".site-header");
-
-      const headerHeight =
-        header ? header.offsetHeight : 0;
-
-      const targetPosition =
-        target.getBoundingClientRect().top +
-        window.pageYOffset -
-        headerHeight -
-        10;
-
-      window.scrollTo({
-        top: Math.max(0, targetPosition),
-        behavior: "smooth"
-      });
-
-      /*
-       * Update URL without causing another jump.
-       */
-      if (history.pushState) {
-        history.pushState(null, "", href);
-      }
-
     });
 
   });
-
-  /*
-   * Active navigation highlight.
-   */
-  const sections = links
-    .map((link) => {
-
-      const href = link.getAttribute("href");
-
-      const selector =
-        href === "#top" ? ".hero" : href;
-
-      const section =
-        document.querySelector(selector);
-
-      return section
-        ? { link, section }
-        : null;
-
-    })
-    .filter(Boolean);
-
-
-  if ("IntersectionObserver" in window) {
-
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-
-          entries.forEach((entry) => {
-
-            if (!entry.isIntersecting) return;
-
-            sections.forEach((item) => {
-
-              item.link.classList.toggle(
-                "active",
-                item.section === entry.target
-              );
-
-            });
-
-          });
-
-        },
-        {
-          rootMargin: "-30% 0px -60% 0px",
-          threshold: 0
-        }
-      );
-
-    sections.forEach((item) => {
-      observer.observe(item.section);
-    });
-
-  }
 
 })();
