@@ -331,22 +331,27 @@
       cForm.reset();
     });
   }
-     /* ---------- Active nav link on scroll ---------- */
-  const navLinks = $$(".primary-nav a[href^='#']");
-  const sections = navLinks
-    .map((a) => document.querySelector(a.getAttribute("href")))
-    .filter(Boolean);
+  /* ---------- Active nav highlight (standalone) ---------- */
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll(".primary-nav a[href^='#']"));
+  if (!links.length || !("IntersectionObserver" in window)) return;
 
-  const spy = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach((a) =>
-          a.classList.toggle("active", a.getAttribute("href") === `#${entry.target.id}`)
-        );
+  var map = [];
+  links.forEach(function (a) {
+    var sec = document.querySelector(a.getAttribute("href"));
+    if (sec) map.push({ link: a, section: sec });
+  });
+
+  var spy = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      map.forEach(function (item) {
+        item.link.classList.toggle("active", item.section === entry.target);
       });
-    },
-    { rootMargin: "-40% 0px -55% 0px" }
-  );
-  sections.forEach((s) => spy.observe(s));
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+
+  map.forEach(function (item) { spy.observe(item.section); });
+})();
+
 })();
